@@ -38,6 +38,19 @@ entity xc7_top_level is
         sw              : in    std_logic_vector(3 downto 0);
         --LEDs
         led             : out   std_logic_vector(3 downto 0);
+		--RGB LEDs
+		led0_b			: out	std_logic;
+		led0_g			: out	std_logic;
+		led0_r			: out	std_logic;
+		led1_b			: out	std_logic;
+		led1_g			: out	std_logic;
+		led1_r			: out	std_logic;
+		led2_b			: out	std_logic;
+		led2_g			: out	std_logic;
+		led2_r			: out	std_logic;
+		led3_b			: out	std_logic;
+		led3_g			: out	std_logic;
+		led3_r			: out	std_logic;
         --Buttons
         btn             : in    std_logic_vector(3 downto 0);
         --Pmod Header JA
