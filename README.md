@@ -1,7 +1,7 @@
 # capstone-fpga-memory-model
 
-A Proof of Concept / Critical Design Subsystem 
-For an FPGA Based Random Number Generator
+A Proof of Concept / Critical Design Subsystem <br />
+For an FPGA Based Random Number Generator <br />
 Part of a Senior Capstone Project
 
 ## Board Information
@@ -13,28 +13,30 @@ Part of a Senior Capstone Project
 ## Road-map
 
 ### Arty-A7-35-Master.xdc
-STATUS: complete
-Master XDC constants file
-Provided by Digilent Corp.
+STATUS: complete <br />
+Master XDC constants file <br />
+Provided by Digilent Corp. 
 
 ### xc7_top_level.vhd
-STATUS: in progress
-Top level VHDL file 
+STATUS: in progress <br />
+Top level VHDL file <br />
 Pin I/O and component declarations
 
 ### clock_divider.vhd
-STATUS: not started
+STATUS: not started <br />
+Scales down the clock so that the LED output <br />
+Is visible whenever a new number is generated
 
 
 ### led_decoder.vhd
-STATUS: not started
-Converts the binary values stored
+STATUS: not started <br />
+Converts the binary values stored <br />
 in memory to signals for the RGB LEDs
 
 ### Memory Model
-STATUS: not started
-Memory to store and retrieve Pseudo random
-numbers on the FPGA using a linear shift register
+STATUS: not started <br />
+Memory to store and retrieve Pseudo random <br />
+numbers on the FPGA using a linear shift register <br />
 * Option 1: VHDL read/write memory model using an array of vectors
 * Option 2: Xilinx Memory IP Core
 
