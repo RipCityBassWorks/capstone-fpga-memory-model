@@ -23,18 +23,18 @@ Top level VHDL file <br />
 Pin I/O and component declarations
 
 ### clock_divider.vhd
-STATUS: not started <br />
+STATUS: needs testing + debugging <br />
 Scales down the clock so that the LED output <br />
 Is visible whenever a new number is generated
 
 
 ### led_decoder.vhd
-STATUS: not started <br />
+STATUS: needs testing + debugging <br />
 Converts the binary values stored <br />
 in memory to signals for the RGB LEDs
 
 ### Memory Model
-STATUS: not started <br />
+STATUS: in progress <br />
 Memory to store and retrieve Pseudo random <br />
 numbers on the FPGA using a linear shift register <br />
 * Option 1: VHDL read/write memory model using an array of vectors
