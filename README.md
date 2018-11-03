@@ -33,12 +33,29 @@ STATUS: needs testing + debugging <br />
 Converts the binary values stored <br />
 in memory to signals for the RGB LEDs
 
+
+### delay_counter.vhd
+STATUS: needs testing + debugging <br />
+Four second counter that output <br />
+A one after four seconds and <br />
+Outputs a zero during counting 
+
+
+### lfsr.vhd 
+STATUS: needs testing + debugging <br />
+Linear Feedback Shift Register <br />
+Used for generate hardware level <br />
+Pseudo random numbers 
+
+
 ### Memory Model
 STATUS: in progress <br />
 Memory to store and retrieve Pseudo random <br />
 numbers on the FPGA using a linear shift register <br />
-* Option 1: VHDL read/write memory model using an array of vectors
-* Option 2: Xilinx Memory IP Core
+VHDL read/write memory model using an array of vectors
+
+
+
 
 
 
