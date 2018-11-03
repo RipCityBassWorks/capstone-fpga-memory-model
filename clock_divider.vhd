@@ -6,15 +6,9 @@
 -- Module Name: clock_divider - clock_divider_arch
 -- Project Name: capstone-fpga-memory-model
 -- Target Devices: XC7A35TICSG324-1L
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
+-- Tool Versions: Vivado 2018.2
+-- Description: 4 option clock divider using counters
+-- Component of xc7_top_level.vhd
 ----------------------------------------------------------------------------------
 
 
@@ -30,7 +24,7 @@ entity clock_divider is
         sel             : in    std_logic_vector(1 downto 0);
         clk_out         : out   std_logic
     );
-end clock_divider;
+end entity clock_divider;
 
 architecture clock_divider_arch of clock_divider is
     
