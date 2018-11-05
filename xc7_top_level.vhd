@@ -23,18 +23,18 @@ entity xc7_top_level is
         --LEDs
         led                 : out   std_logic_vector(3 downto 0);
         --RGB LEDs
-        led0_b		        : out	std_logic;
-        led0_g			    : out	std_logic;
-        led0_r			    : out	std_logic;
-        led1_b			    : out	std_logic;
-        led1_g			    : out	std_logic;
-        led1_r			    : out	std_logic;
-        led2_b			    : out	std_logic;
-        led2_g			    : out	std_logic;
-        led2_r			    : out	std_logic;
-        led3_b			    : out	std_logic;
-        led3_g			    : out	std_logic;
-        led3_r			    : out	std_logic;
+        led0_b              : out	std_logic;
+        led0_g              : out	std_logic;
+        led0_r              : out	std_logic;
+        led1_b              : out	std_logic;
+        led1_g              : out	std_logic;
+        led1_r              : out	std_logic;
+        led2_b              : out	std_logic;
+        led2_g              : out	std_logic;
+        led2_r              : out	std_logic;
+        led3_b              : out	std_logic;
+        led3_g              : out	std_logic;
+        led3_r              : out	std_logic;
         --Buttons
         btn                 : in    std_logic_vector(3 downto 0);
         --Pmod Header JA
@@ -93,31 +93,32 @@ architecture xc7_top_level_arch of xc7_top_level is
         );
     end component lfsr;
     
-    component rw_128x32 is
-        port(
-            clock       : in    std_logic;
+    component memory is
+        Port( 
+            clk         : in    std_logic;
+            clk_div     : in    std_logic;
             reset       : in    std_logic;
-            write       : in    std_logic;
-            address     : in    std_logic_vector(31 downto 0);
             data_in     : in    std_logic_vector(31 downto 0);
-            data_out    : out   std_logic_vector(31 downto 0)    
+            data_out    : out   std_logic_vector(31 downto 0) 
         );
-    end component rw_128x32;
-    
+    end component memory;
     
 --SIGNALS    
     signal clock            : std_logic;
+    signal reset            : std_logic                         := sw(3);
     signal led_test         : std_logic;
     signal led_test1        : std_logic;
-    signal mem_block        : std_logic_vector(31 downto 0);
-    signal reg_in           : std_logic_vector(31 downto 0)    := "00000101111101011110000100000000";
-    signal sys_clks_sec     : std_logic_vector(31 downto 0)    := "00000101111101011110000100000000";            
+    signal mem_block_in     : std_logic_vector(31 downto 0);
+    signal mem_block_out    : std_logic_vector(31 downto 0);
+    signal reg_in           : std_logic_vector(31 downto 0)     := "00000101111101011110000100000000";
+    signal sys_clks_sec     : std_logic_vector(31 downto 0)     := "00000101111101011110000100000000";            
 
 begin    
+
     DIVIDE_CLOCK    :   clock_divider   
         port map(
             clk_in      => CLK100MHZ, 
-            reset       => sw(3), 
+            reset       => reset, 
             sel         => sw(1 downto 0), 
             clk_out     => clock
         );
@@ -125,8 +126,8 @@ begin
     LED_DECODE      :   led_decoder
         port map(
             clk         => CLK100MHZ,
-            reset       => sw(3),
-            mem_block   => mem_block(7 downto 0),
+            reset       => reset,
+            mem_block   => mem_block_out(7 downto 0),
             led         => led,               
             led0_b      => led0_b,
             led0_g      => led0_g,
@@ -145,10 +146,18 @@ begin
     SHIFT_REG       :   lfsr
         port map(
             clock       => CLK100MHZ,
-            reset       => sw(3),      
+            reset       => reset,      
             reg_in      => reg_in,    
-            lfsr_out    => mem_block  
+            lfsr_out    => mem_block_in  
         );
     
+    RW_MEMORY       :   memory
+        port map(
+            clk         => CLK100MHZ,
+            clk_div     => clock,
+            reset       => reset,
+            data_in     => mem_block_in,
+            data_out    => mem_block_out
+        );
     
 end xc7_top_level_arch;
