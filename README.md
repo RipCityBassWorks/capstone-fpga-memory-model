@@ -29,26 +29,26 @@ Is visible whenever a new number is generated
 
 
 ### led_decoder.vhd
-STATUS: needs testing + debugging <br />
+STATUS: complete <br />
 Converts the binary values stored <br />
 in memory to signals for the RGB LEDs
 
 
 ### delay_counter.vhd
-STATUS: needs testing + debugging <br />
+STATUS: complete <br />
 Four second counter that output <br />
 A one after four seconds and <br />
 Outputs a zero during counting 
 
 
 ### lfsr.vhd 
-STATUS: needs testing + debugging <br />
+STATUS: complete <br />
 Linear Feedback Shift Register <br />
 Used for generate hardware level <br />
 Pseudo random numbers 
 
 
-### Memory Model
+### rw_128x32.vhd
 STATUS: in progress <br />
 Memory to store and retrieve Pseudo random <br />
 numbers on the FPGA using a linear shift register <br />
