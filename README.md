@@ -31,29 +31,42 @@ Is visible whenever a new number is generated
 ### led_decoder.vhd
 STATUS: complete <br />
 Converts the binary values stored <br />
-in memory to signals for the RGB LEDs
+in memory to signals for the LEDs
 
 
 ### delay_counter.vhd
 STATUS: complete <br />
-Four second counter that output <br />
-A one after four seconds and <br />
+1.5 second counter that output <br />
+A one after 1.5 seconds and <br />
 Outputs a zero during counting 
 
 
 ### lfsr.vhd 
 STATUS: complete <br />
 Linear Feedback Shift Register <br />
-Used for generate hardware level <br />
+Used for generating hardware level <br />
 Pseudo random numbers 
 
 
 ### rw_128x32.vhd
-STATUS: in progress <br />
+STATUS: needs testing + debugging <br />
 Memory to store and retrieve Pseudo random <br />
-numbers on the FPGA using a linear shift register <br />
+numbers generated from lfsr.vhd on the FPGA <br />
 VHDL read/write memory model using an array of vectors
 
+
+### memory.vhd 
+STATUS: needs testing + debugging <br />
+Control for rw_128x32.vhd <br />
+Populates the r/w memory with 32 bit numbers <br />
+And then reads back the values <br />
+
+
+### UART IP Core
+STATUS: In progress <br />
+Xilinx IP Core for communication to a computer <br />
+Terminal over UART. The numbers stored in memory will be <br />
+Sent as inputs and displayed in the computer terminal
 
 
 
