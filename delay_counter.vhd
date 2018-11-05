@@ -7,7 +7,7 @@
 -- Project Name: capstone-fpga-memory-model
 -- Target Devices: XC7A35TICSG324-1L
 -- Tool Versions: Vivado 2018.2
--- Description: 4 second delay counter used for changing the LED output
+-- Description: 1.5 second delay counter used for changing the LED output
 -- Component of led_decoder.vhd
 ----------------------------------------------------------------------------------
 
@@ -28,7 +28,7 @@ end entity delay_counter;
 architecture delay_counter_arch of delay_counter is
     
     signal cnt_int      : integer;
-    signal delay_int    : integer   := 400000000;
+    signal delay_int    : integer   := 150000000;
     
 begin
     
