@@ -27,7 +27,8 @@ entity clock_divider is
 end entity clock_divider;
 
 architecture clock_divider_arch of clock_divider is
-    
+
+--SIGNALS    
     signal cnt_int      : integer;
     signal clk          : std_logic;
     
@@ -39,11 +40,11 @@ begin
                 cnt_int <= 0;
                 clk     <= '0';
             elsif(rising_edge(clk_in)) then
-                --1Hz clock
-                --period = 1sec
-                --counts = 100,000,000
+                --0.66 Hz clock
+                --period = 1.5sec
+                --counts = 150,000,000
                 if(sel = "00") then
-                    if(cnt_int = 99999999) then
+                    if(cnt_int = 149999999) then
                         cnt_int <= 0;
                         clk     <= not clk;
                     else
@@ -61,22 +62,22 @@ begin
                         cnt_int <= cnt_int + 1;
                     end if;
                     
-                --100Hz clock
-                --period = 0.01sec
-                --counts = 1,000,000
+                --10kHz clock
+                --period = 0.0001sec
+                --counts = 10,000
                 elsif(sel = "10") then
-                    if(cnt_int = 999999) then
+                    if(cnt_int = 9999) then
                         cnt_int <= 0;
                         clk     <= not clk;
                     else
                         cnt_int <= cnt_int + 1;
                     end if;
                     
-                --1kHz clock
-                --period = 0.001sec
-                --counts = 100,000
+                --1MHz clock
+                --period = 0.000001sec
+                --counts = 100
                 elsif(sel = "11") then
-                    if(cnt_int = 99999) then
+                    if(cnt_int = 99) then
                         cnt_int <= 0;
                         clk     <= not clk;
                     else
