@@ -55,45 +55,34 @@ architecture led_decoder_arch of led_decoder is
     
 begin
     
-    FOUR_SEC_DELAY  :   delay_counter
+    ONE_FIVE_SEC_DELAY  :   delay_counter
         port map(
             clock       => clk,
             reset       => reset,
             delay_out   => delay_out
         );
-
---    process(clk, reset)
---        begin
---            if(reset = '0') then
---                led_vector <= "00000000";  
---            elsif(rising_edge(clk)) then
---                led_vector <= mem_block;  
---            end if;
---    end process;
-    
-    led_vector <= mem_block;
     
     process(clk, reset)
         begin
-            if(rising_edge(clk)) then
+            if(reset = '0') then
+                led(3 downto 0)     <= "0000";
+                led0_r              <= '0';
+                led1_r              <= '0';
+                led2_r              <= '0';
+                led3_r              <= '0'; 
+            elsif(rising_edge(clk)) then
+                led_vector <= mem_block;
                 if(delay_out = '1') then
-                    led0_b      <= led_vector(7);
-                    led0_r      <= led_vector(6);
-                    led1_b      <= led_vector(5);
-                    led1_r      <= led_vector(4);
-                    led2_b      <= led_vector(3);
-                    led2_r      <= led_vector(2);
-                    led3_b      <= led_vector(1);
-                    led3_r      <= led_vector(0); 
+                    led(3 downto 0)     <= led_vector(7 downto 4);
+                    led0_r              <= led_vector(0);
+                    led1_r              <= led_vector(1);
+                    led2_r              <= led_vector(2);
+                    led3_r              <= led_vector(3);
                 end if;
             end if;
     end process;
     
-    led(3 downto 0)     <= led_vector(7 downto 4);
-    led0_r              <= led_vector(0);
-    led1_r              <= led_vector(1);
-    led2_r              <= led_vector(2);
-    led3_r              <= led_vector(3); 
-    
+            
+
                 
 end led_decoder_arch;
