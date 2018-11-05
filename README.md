@@ -45,7 +45,7 @@ Outputs a zero during counting
 STATUS: complete <br />
 Linear Feedback Shift Register <br />
 Used for generating hardware level <br />
-Pseudo random numbers 
+32 bit Pseudo random numbers 
 
 
 ### rw_128x32.vhd
