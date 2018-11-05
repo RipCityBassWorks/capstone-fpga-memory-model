@@ -30,9 +30,11 @@ entity rw_128x32 is
 end entity rw_128x32;
 
 architecture rw_128x32_arch of rw_128x32 is
-
-    type rw_type is array(0 to 128) of std_logic_vector(7 downto 0);
     
+    --array or 128 blocks of 32 bits for 4096 bit storage capacity
+    type rw_type is array(0 to 128) of std_logic_vector(31 downto 0);
+    
+--SIGNALS    
     signal RW       : rw_type;
     signal en       : std_logic;
 
