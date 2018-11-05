@@ -93,11 +93,22 @@ architecture xc7_top_level_arch of xc7_top_level is
         );
     end component lfsr;
     
+    component rw_128x32 is
+        port(
+            clock       : in    std_logic;
+            reset       : in    std_logic;
+            write       : in    std_logic;
+            address     : in    std_logic_vector(31 downto 0);
+            data_in     : in    std_logic_vector(31 downto 0);
+            data_out    : out   std_logic_vector(31 downto 0)    
+        );
+    end component rw_128x32;
+    
     
 --SIGNALS    
     signal clock            : std_logic;
     signal led_test         : std_logic;
-    signal led_test1         : std_logic;
+    signal led_test1        : std_logic;
     signal mem_block        : std_logic_vector(31 downto 0);
     signal reg_in           : std_logic_vector(31 downto 0)    := "00000101111101011110000100000000";
     signal sys_clks_sec     : std_logic_vector(31 downto 0)    := "00000101111101011110000100000000";            
@@ -106,7 +117,7 @@ begin
     DIVIDE_CLOCK    :   clock_divider   
         port map(
             clk_in      => CLK100MHZ, 
-            reset       => btn(3), 
+            reset       => sw(3), 
             sel         => sw(1 downto 0), 
             clk_out     => clock
         );
@@ -114,8 +125,8 @@ begin
     LED_DECODE      :   led_decoder
         port map(
             clk         => CLK100MHZ,
-            reset       => btn(3),
-            mem_block   => "10101010",
+            reset       => sw(3),
+            mem_block   => mem_block(7 downto 0),
             led         => led,               
             led0_b      => led0_b,
             led0_g      => led0_g,
@@ -134,7 +145,7 @@ begin
     SHIFT_REG       :   lfsr
         port map(
             clock       => CLK100MHZ,
-            reset       => btn(3),      
+            reset       => sw(3),      
             reg_in      => reg_in,    
             lfsr_out    => mem_block  
         );
