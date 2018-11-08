@@ -55,7 +55,7 @@ architecture led_decoder_arch of led_decoder is
     
 begin
     
-    ONE_FIVE_SEC_DELAY  :   delay_counter
+    TWO_SEC_DELAY  :   delay_counter
         port map(
             clock       => clk,
             reset       => reset,
@@ -82,7 +82,5 @@ begin
             end if;
     end process;
     
-            
-
-                
+                         
 end led_decoder_arch;
