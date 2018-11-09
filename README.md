@@ -4,6 +4,11 @@ A Proof of Concept / Critical Design Subsystem <br />
 For an FPGA Based Random Number Generator <br />
 Part of a Senior Capstone Project
 
+## Function
+* 
+*
+*
+
 ## Board Information
 * Arty A7-35T
 * FPGA: XC7A35TICSG324-1L
@@ -60,6 +65,18 @@ STATUS: needs testing + debugging <br />
 Control for rw_128x32.vhd <br />
 Populates the r/w memory with 32 bit numbers <br />
 And then reads back the values <br />
+
+
+### btn_debounce.vhd 
+STATUS: needs testing + debugging <br />
+control component for debouncing and <br />
+synchronizing the push-buttons for future use <br />
+
+
+### dflipflop.vhd 
+STATUS: needs testing + debugging <br />
+VHDL model of a d-flip-flop <br />
+Used for debouncing the push buttons
 
 
 ### UART IP Core
