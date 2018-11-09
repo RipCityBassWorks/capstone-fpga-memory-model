@@ -23,16 +23,16 @@ entity rw_128x32 is
         clock       : in    std_logic;
         reset       : in    std_logic;
         write       : in    std_logic;
-        address     : in    std_logic_vector(31 downto 0);
-        data_in     : in    std_logic_vector(31 downto 0);
-        data_out    : out   std_logic_vector(31 downto 0)    
+        address     : in    std_logic_vector(15 downto 0);
+        data_in     : in    std_logic_vector(15 downto 0);
+        data_out    : out   std_logic_vector(15 downto 0)    
     );
 end entity rw_128x32;
 
 architecture rw_128x32_arch of rw_128x32 is
     
-    --array or 128 blocks of 32 bits for 4096 bit storage capacity
-    type rw_type is array(0 to 128) of std_logic_vector(31 downto 0);
+    --array or 128 blocks of 16 bits for 2048 bit storage capacity
+    type rw_type is array(0 to 127) of std_logic_vector(15 downto 0);
     
 --SIGNALS    
     signal RW       : rw_type;
@@ -46,7 +46,7 @@ begin
                 en <= '0';
             elsif(rising_edge(clock)) then 
                 if((to_integer(unsigned(address)) >= 0) and 
-                    (to_integer(unsigned(address)) <= 128)) then
+                    (to_integer(unsigned(address)) <= 127)) then
                     en <= '1';
                 else 
                     en <= '0';
