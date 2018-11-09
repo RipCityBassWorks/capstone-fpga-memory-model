@@ -22,8 +22,8 @@ entity memory is
         clk         : in    std_logic;
         clk_div     : in    std_logic;
         reset       : in    std_logic;
-        data_in     : in    std_logic_vector(31 downto 0);
-        data_out    : out   std_logic_vector(31 downto 0) 
+        data_in     : in    std_logic_vector(15 downto 0);
+        data_out    : out   std_logic_vector(15 downto 0) 
     );
 end memory;
 
@@ -35,16 +35,16 @@ architecture memory_arch of memory is
             clock       : in    std_logic;
             reset       : in    std_logic;
             write       : in    std_logic;
-            address     : in    std_logic_vector(31 downto 0);
-            data_in     : in    std_logic_vector(31 downto 0);
-            data_out    : out   std_logic_vector(31 downto 0)    
+            address     : in    std_logic_vector(15 downto 0);
+            data_in     : in    std_logic_vector(15 downto 0);
+            data_out    : out   std_logic_vector(15 downto 0)    
         );
     end component rw_128x32;
 
 --SIGNALS
     signal write_en     : std_logic                         := '1';
     signal addr_int     : integer;
-    signal addr_out     : std_logic_vector(31 downto 0);
+    signal addr_out     : std_logic_vector(15 downto 0);
     
 begin
 
@@ -73,7 +73,7 @@ begin
                     end if;
                 elsif(write_en = '0') then
                     --13 address values return 7 numbers to the LEDs
-                    --This is probably due to the 1.5 second delay on LED decoder
+                    --This is probably due to the 2 second delay on LED decoder
                     if(addr_int > 12) then
                         addr_int <= 0;
                     else
@@ -83,7 +83,7 @@ begin
             end if;
     end process;
     
-    addr_out <= std_logic_vector(to_unsigned(addr_int,32));
+    addr_out <= std_logic_vector(to_unsigned(addr_int,16));
     
 
 end memory_arch;
