@@ -18,6 +18,8 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity xc7_top_level is
     Port(--Clock signal
         CLK100MHZ           : in    std_logic;
+        --Reset signal
+        ck_rst              : in    std_logic;
         --Switches
         sw                  : in    std_logic_vector(3 downto 0);
         --LEDs
@@ -88,33 +90,81 @@ architecture xc7_top_level_arch of xc7_top_level is
         port(
             clock           : in    std_logic;
             reset           : in    std_logic;
-            reg_in          : in    std_logic_vector(31 downto 0);
-            lfsr_out        : out   std_logic_vector(31 downto 0)
+            enable          : in    std_logic;
+            reg_in          : in    std_logic_vector(15 downto 0);
+            lfsr_out        : out   std_logic_vector(15 downto 0)
         );
     end component lfsr;
     
     component memory is
         Port( 
-            clk         : in    std_logic;
-            clk_div     : in    std_logic;
-            reset       : in    std_logic;
-            data_in     : in    std_logic_vector(31 downto 0);
-            data_out    : out   std_logic_vector(31 downto 0) 
+            clk             : in    std_logic;
+            clk_div         : in    std_logic;
+            reset           : in    std_logic;
+            data_in         : in    std_logic_vector(15 downto 0);
+            data_out        : out   std_logic_vector(15 downto 0) 
         );
     end component memory;
     
+    component btn_debounce is 
+        port(
+            clock           : in    std_logic;
+            reset           : in    std_logic;
+            pb_in           : in    std_logic;
+            pb_out          : out   std_logic
+        );
+    end component btn_debounce;
+    
 --SIGNALS    
     signal clock            : std_logic;
-    signal reset            : std_logic                         := sw(3);
-    signal led_test         : std_logic;
-    signal led_test1        : std_logic;
-    signal mem_block_in     : std_logic_vector(31 downto 0);
-    signal mem_block_out    : std_logic_vector(31 downto 0);
-    signal reg_in           : std_logic_vector(31 downto 0)     := "00000101111101011110000100000000";
+    signal reset            : std_logic                         := sw(3);--ck_rst;
+    --btn(0) debounced
+    signal pb_0             : std_logic;   
+    --btn(1) debounced     
+    signal pb_1             : std_logic;
+    --btn(2) debounced
+    signal pb_2             : std_logic;
+    --btn(3) debounced
+    signal pb_3             : std_logic;
+    signal mem_block_in     : std_logic_vector(15 downto 0);
+    signal mem_block_out    : std_logic_vector(15 downto 0);
+    signal reg_in           : std_logic_vector(15 downto 0)     := "0000010111110101";
     signal sys_clks_sec     : std_logic_vector(31 downto 0)     := "00000101111101011110000100000000";            
 
 begin    
-
+    
+    PUSH_BUTTON_ZERO    :   btn_debounce
+        port map(
+            clock       => CLK100MHZ,
+            reset       => reset,
+            pb_in       => btn(0),
+            pb_out      => pb_0
+        );
+    
+    PUSH_BUTTON_ONE    :   btn_debounce
+        port map(
+            clock       => CLK100MHZ,
+            reset       => reset,
+            pb_in       => btn(1),
+            pb_out      => pb_1
+        ); 
+        
+    PUSH_BUTTON_TWO    :   btn_debounce
+        port map(
+            clock       => CLK100MHZ,
+            reset       => reset,
+            pb_in       => btn(2),
+            pb_out      => pb_2
+        );  
+    
+    PUSH_BUTTON_THREE    :   btn_debounce
+        port map(
+            clock       => CLK100MHZ,
+            reset       => reset,
+            pb_in       => btn(3),
+            pb_out      => pb_3
+        ); 
+        
     DIVIDE_CLOCK    :   clock_divider   
         port map(
             clk_in      => CLK100MHZ, 
@@ -127,7 +177,7 @@ begin
         port map(
             clk         => CLK100MHZ,
             reset       => reset,
-            mem_block   => mem_block_out(7 downto 0),
+            mem_block   => mem_block_in(7 downto 0),
             led         => led,               
             led0_b      => led0_b,
             led0_g      => led0_g,
@@ -146,9 +196,10 @@ begin
     SHIFT_REG       :   lfsr
         port map(
             clock       => CLK100MHZ,
-            reset       => reset,      
-            reg_in      => reg_in,    
-            lfsr_out    => mem_block_in  
+            reset       => reset,
+            enable      => sw(2),      
+            reg_in      => reg_in,   
+            lfsr_out    => mem_block_in 
         );
     
     RW_MEMORY       :   memory
@@ -159,5 +210,17 @@ begin
             data_in     => mem_block_in,
             data_out    => mem_block_out
         );
+        
+--    process(CLK100MHZ, pb_3)
+--        begin
+--            if(rising_edge(CLK100MHZ)) then
+--                if(pb_3 = '0') then
+--                    led(0) <= '1';
+--                elsif(pb_3 = '1') then
+--                    led(0) <= '0';
+--                end if;
+--            end if;
+--    end process;
+            
     
 end xc7_top_level_arch;
