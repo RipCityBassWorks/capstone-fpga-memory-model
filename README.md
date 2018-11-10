@@ -5,9 +5,14 @@ For an FPGA Based Random Number Generator <br />
 Part of a Senior Capstone Project
 
 ## Function
-* 
-*
-*
+* The LFSR is initialized with an arbitrary 16 bit binary value
+* Upon user input via btn(0), bit 14 of the LFSR is set to (bit 0) xor (bit 1)
+* btn(0) = '1' is the enable condition
+* This simulates a single event effect
+* The output from the LFSR is continuously sent to the UART at the same frequency as the LFSR (user selectable by sw(1 downto 0))
+* The output is converted to hexadecimal prior to being displayed on a terminal 
+* The output of the LFSR with the enable condition is stored in a slot of the 128x16 memory block
+* The LEDs and RGB LEDs loop the binary values of the top 8 bits of the values stored in memory
 
 ## Board Information
 * Arty A7-35T
