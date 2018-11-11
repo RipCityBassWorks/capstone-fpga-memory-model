@@ -19,11 +19,11 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity memory is
     Port( 
-        clk         : in    std_logic;
-        clk_div     : in    std_logic;
-        reset       : in    std_logic;
-        data_in     : in    std_logic_vector(15 downto 0);
-        data_out    : out   std_logic_vector(15 downto 0) 
+        clk             : in    std_logic;
+        reset           : in    std_logic;
+        event_en        : in    std_logic;
+        data_in         : in    std_logic_vector(15 downto 0);
+        data_out        : out   std_logic_vector(15 downto 0)  
     );
 end memory;
 
@@ -37,7 +37,7 @@ architecture memory_arch of memory is
             write       : in    std_logic;
             address     : in    std_logic_vector(15 downto 0);
             data_in     : in    std_logic_vector(15 downto 0);
-            data_out    : out   std_logic_vector(15 downto 0)    
+            data_out    : out   std_logic_vector(15 downto 0)        
         );
     end component rw_128x32;
 
@@ -58,14 +58,14 @@ begin
             data_out    => data_out
         );
     
-    DATA_RW : process(clk, clk_div, reset)
+    DATA_RW : process(clk, reset)
         begin
             if(reset = '0') then
                 addr_int <= 0;
                 write_en <= '1';
             elsif(rising_edge(clk)) then
-                if(write_en = '1') then
-                    if(addr_int > 127) then
+                if(write_en = '1' and data_in /= "0000000000000000") then
+                    if(addr_int = 7) then
                         addr_int <= 0;
                         write_en <= '0';
                     else
@@ -74,7 +74,7 @@ begin
                 elsif(write_en = '0') then
                     --13 address values return 7 numbers to the LEDs
                     --This is probably due to the 2 second delay on LED decoder
-                    if(addr_int > 12) then
+                    if(addr_int = 7) then
                         addr_int <= 0;
                     else
                         addr_int <= addr_int + 1;
