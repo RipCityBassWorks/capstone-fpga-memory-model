@@ -21,7 +21,7 @@ entity lfsr is
     port(
         clock       : in    std_logic;
         reset       : in    std_logic;
-        enable      : in    std_logic;
+        en          : in    std_logic;
         reg_in      : in    std_logic_vector(15 downto 0);
         lfsr_out    : out   std_logic_vector(15 downto 0)
     );
@@ -31,24 +31,24 @@ architecture lfsr_arch of lfsr is
 
     
 --SIGNALS    
-    signal shift        : std_logic_vector(15 downto 0);
+    signal shift    : std_logic_vector(15 downto 0)     := reg_in;
 
 begin
 
-    shift <= reg_in;
-
-    LINEAR_FEEDBACK_SHIFT_REGISTER  :   process(clock, reset)
+    LINEAR_FEEDBACK_SHIFT_REGISTER  :   process(clock, reset, en, reg_in)
         begin
             if(reset = '0') then
                 shift <= reg_in;
             elsif(rising_edge(clock)) then
-                shift(15) <= shift(0);
-                if(enable = '1') then
+                if(en = '1') then
+                    shift(15) <= shift(0);
                     shift(14) <= shift(15) xor shift(0);
-                else
+                    shift(13 downto 0) <= shift(14 downto 1);
+                elsif(en = '0') then
+                    shift(15) <= shift(0);
                     shift(14) <= shift(15);
+                    shift(13 downto 0) <= shift(14 downto 1);
                 end if;
-                shift(13 downto 0) <= shift(14 downto 1);
             end if;
         end process;
      
