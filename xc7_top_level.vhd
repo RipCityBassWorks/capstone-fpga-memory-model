@@ -90,17 +90,18 @@ architecture xc7_top_level_arch of xc7_top_level is
         port(
             clock           : in    std_logic;
             reset           : in    std_logic;
-            enable          : in    std_logic;
+            en              : in    std_logic;
             reg_in          : in    std_logic_vector(15 downto 0);
-            lfsr_out        : out   std_logic_vector(15 downto 0)
+            lfsr_out        : out   std_logic_vector(15 downto 0);
+            random_out      : out   std_logic_vector(15 downto 0)
         );
     end component lfsr;
     
     component memory is
         Port( 
             clk             : in    std_logic;
-            clk_div         : in    std_logic;
             reset           : in    std_logic;
+            event_en        : in    std_logic;
             data_in         : in    std_logic_vector(15 downto 0);
             data_out        : out   std_logic_vector(15 downto 0) 
         );
@@ -126,9 +127,11 @@ architecture xc7_top_level_arch of xc7_top_level is
     signal pb_2             : std_logic;
     --btn(3) debounced
     signal pb_3             : std_logic;
+    signal event_en         : std_logic                         := pb_0;
     signal mem_block_in     : std_logic_vector(15 downto 0);
     signal mem_block_out    : std_logic_vector(15 downto 0);
-    signal reg_in           : std_logic_vector(15 downto 0)     := "0000010111110101";
+    signal reg_in           : std_logic_vector(15 downto 0)     := "1110000100000000";  
+    signal random_out       : std_logic_vector(15 downto 0);
     signal sys_clks_sec     : std_logic_vector(31 downto 0)     := "00000101111101011110000100000000";            
 
 begin    
@@ -175,9 +178,9 @@ begin
     
     LED_DECODE      :   led_decoder
         port map(
-            clk         => CLK100MHZ,
+            clk         => clock,
             reset       => reset,
-            mem_block   => mem_block_in(7 downto 0),
+            mem_block   => mem_block_out(7 downto 0), --random_out(7 downto 0),
             led         => led,               
             led0_b      => led0_b,
             led0_g      => led0_g,
@@ -195,32 +198,23 @@ begin
         
     SHIFT_REG       :   lfsr
         port map(
-            clock       => CLK100MHZ,
-            reset       => reset,
-            enable      => sw(2),      
+            clock       => clock,
+            en          => event_en,
+            reset       => reset,      
             reg_in      => reg_in,   
-            lfsr_out    => mem_block_in 
+            lfsr_out    => mem_block_in,
+            random_out  => random_out 
         );
     
     RW_MEMORY       :   memory
         port map(
-            clk         => CLK100MHZ,
-            clk_div     => clock,
+            clk         => clock,
             reset       => reset,
-            data_in     => mem_block_in,
+            event_en    => event_en,
+            data_in     => random_out,
             data_out    => mem_block_out
         );
         
---    process(CLK100MHZ, pb_3)
---        begin
---            if(rising_edge(CLK100MHZ)) then
---                if(pb_3 = '0') then
---                    led(0) <= '1';
---                elsif(pb_3 = '1') then
---                    led(0) <= '0';
---                end if;
---            end if;
---    end process;
-            
+                   
     
 end xc7_top_level_arch;
