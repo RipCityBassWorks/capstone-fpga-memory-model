@@ -7,9 +7,9 @@
 -- Project Name: capstone-fpga-memory-model
 -- Target Devices: XC7A35TICSG324-1L
 -- Tool Versions: Vivado 2018.2
--- Description: Read/Write memory, 128 blocks of 32 bits
--- 4,096 bits = 512 Bytes total used
--- Component of xc7_top_level.vhd
+-- Description: Read/Write memory, 128 blocks of 16 bits
+-- 2,048 bits = 256 Bytes total used
+-- Component of memory.vhd
 ----------------------------------------------------------------------------------
 
 
@@ -43,7 +43,7 @@ begin
     ENABLE : process(clock, reset)
         begin
             if(reset = '0') then
-                en <= '0';
+               en <= '0';
             elsif(rising_edge(clock)) then 
                 if((to_integer(unsigned(address)) >= 0) and 
                     (to_integer(unsigned(address)) <= 127)) then
@@ -59,6 +59,7 @@ begin
             if(rising_edge(clock)) then
                 if(en = '1' and write = '1') then
                     RW(to_integer(unsigned(address))) <= data_in;
+                    data_out <= data_in;
                 elsif(en = '1' and write = '0') then
                     data_out <= RW(to_integer(unsigned(address)));
                 end if;
