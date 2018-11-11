@@ -72,13 +72,13 @@ begin
                 led3_r              <= '0'; 
             elsif(rising_edge(clk)) then
                 led_vector <= mem_block;
-                if(delay_out = '1') then
+                --if(delay_out = '1') then
                     led(3 downto 0)     <= led_vector(7 downto 4);
                     led0_r              <= led_vector(0);
                     led1_r              <= led_vector(1);
                     led2_r              <= led_vector(2);
                     led3_r              <= led_vector(3);
-                end if;
+                --end if;
             end if;
     end process;
     
