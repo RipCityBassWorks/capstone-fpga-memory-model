@@ -40,11 +40,22 @@ begin
                 cnt_int <= 0;
                 clk     <= '0';
             elsif(rising_edge(clk_in)) then
-                --0.66 Hz clock
-                --period = 1.5sec
-                --counts = 150,000,000
+                --2Hz clock
+                --period = 0.5sec
+                --counts = 49,999,999
                 if(sel = "00") then
-                    if(cnt_int = 149999999) then
+                    if(cnt_int = 49999999) then
+                        cnt_int <= 0;
+                        clk     <= not clk;
+                    else
+                        cnt_int <= cnt_int + 1;
+                    end if;
+                    
+                --5Hz clock
+                --period = 0.2sec
+                --counts = 19,999,999
+                elsif(sel = "01") then
+                    if(cnt_int = 19999999) then
                         cnt_int <= 0;
                         clk     <= not clk;
                     else
@@ -54,7 +65,7 @@ begin
                 --10Hz clock
                 --period = 0.1sec
                 --counts = 10,000,000
-                elsif(sel = "01") then
+                elsif(sel = "10") then
                     if(cnt_int = 9999999) then
                         cnt_int <= 0;
                         clk     <= not clk;
@@ -65,19 +76,8 @@ begin
                 --10kHz clock
                 --period = 0.0001sec
                 --counts = 10,000
-                elsif(sel = "10") then
-                    if(cnt_int = 9999) then
-                        cnt_int <= 0;
-                        clk     <= not clk;
-                    else
-                        cnt_int <= cnt_int + 1;
-                    end if;
-                    
-                --1MHz clock
-                --period = 0.000001sec
-                --counts = 100
                 elsif(sel = "11") then
-                    if(cnt_int = 99) then
+                    if(cnt_int = 9999) then
                         cnt_int <= 0;
                         clk     <= not clk;
                     else
