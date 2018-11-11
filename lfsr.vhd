@@ -23,7 +23,8 @@ entity lfsr is
         reset       : in    std_logic;
         en          : in    std_logic;
         reg_in      : in    std_logic_vector(15 downto 0);
-        lfsr_out    : out   std_logic_vector(15 downto 0)
+        lfsr_out    : out   std_logic_vector(15 downto 0);
+        random_out  : out   std_logic_vector(15 downto 0)
     );
 end entity lfsr;
 
@@ -44,10 +45,12 @@ begin
                     shift(15) <= shift(0);
                     shift(14) <= shift(15) xor shift(0);
                     shift(13 downto 0) <= shift(14 downto 1);
+                    random_out <= shift;
                 elsif(en = '0') then
                     shift(15) <= shift(0);
                     shift(14) <= shift(15);
                     shift(13 downto 0) <= shift(14 downto 1);
+                    random_out <= "0000000000000000";
                 end if;
             end if;
         end process;
