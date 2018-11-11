@@ -33,7 +33,7 @@ Top level VHDL file <br />
 Pin I/O and component declarations
 
 ### clock_divider.vhd
-STATUS: needs testing + debugging <br />
+STATUS: complete <br />
 Scales down the clock so that the LED output <br />
 Is visible whenever a new number is generated
 
@@ -52,7 +52,7 @@ Outputs a zero during counting
 
 
 ### lfsr.vhd 
-STATUS: complete <br />
+STATUS: Complete <br />
 Linear Feedback Shift Register <br />
 Used for generating hardware level <br />
 32 bit Pseudo random numbers 
@@ -73,13 +73,13 @@ And then reads back the values <br />
 
 
 ### btn_debounce.vhd 
-STATUS: needs testing + debugging <br />
+STATUS: complete <br />
 control component for debouncing and <br />
 synchronizing the push-buttons for future use <br />
 
 
 ### dflipflop.vhd 
-STATUS: needs testing + debugging <br />
+STATUS: complete <br />
 VHDL model of a d-flip-flop <br />
 Used for debouncing the push buttons
 
