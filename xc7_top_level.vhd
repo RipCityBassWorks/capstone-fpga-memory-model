@@ -180,7 +180,7 @@ begin
         port map(
             clk         => clock,
             reset       => reset,
-            mem_block   => mem_block_out(7 downto 0), --random_out(7 downto 0),
+            mem_block   => mem_block_out(7 downto 0),
             led         => led,               
             led0_b      => led0_b,
             led0_g      => led0_g,
@@ -214,7 +214,16 @@ begin
             data_in     => random_out,
             data_out    => mem_block_out
         );
-        
+
+    --UART INFO
+    --random_out is the 16 bit output generated upon the enable (btn(0)) condition
+        --random_out <= 0 when btn(0) = 0
+        --random_out <= LFSR output when btn(0) = 1
+    --mem_block_in is the 16 bit output of the LFSR
+        --is updated with the LFSR at the user defined clock 
+    --the outputs of mem_block_in and random_out should be displayed as either hex or integer values
+    --in 2 seperate columns on the UART output on the terminal
+    --This way the button pushes that simulate ionizing radiation can be easily seen        
                    
     
 end xc7_top_level_arch;
