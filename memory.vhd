@@ -30,7 +30,7 @@ end memory;
 architecture memory_arch of memory is
 
 --COMPONENT DECLARATIONS    
-    component rw_128x32 is
+    component rw_128x16 is
         port(
             clock       : in    std_logic;
             reset       : in    std_logic;
@@ -39,7 +39,7 @@ architecture memory_arch of memory is
             data_in     : in    std_logic_vector(15 downto 0);
             data_out    : out   std_logic_vector(15 downto 0)        
         );
-    end component rw_128x32;
+    end component rw_128x16;
 
 --SIGNALS
     signal write_en     : std_logic                         := '1';
@@ -48,7 +48,7 @@ architecture memory_arch of memory is
     
 begin
 
-    RW_MEMORY     :   rw_128x32 
+    RW_MEMORY     :   rw_128x16 
         port map(
             clock       => clk,
             reset       => reset,
