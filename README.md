@@ -5,20 +5,20 @@ For an FPGA Based Random Number Generator <br />
 Part of a Senior Capstone Project
 
 ## Function
-### Reset 
+#### Reset 
 	* Set to sw(3) = 0 (active low)
-### Clock Frequency
+#### Clock Frequency
 	* User selectable at 2Hz, 5Hz, 10Hz, or 10kHz via sw(0) and sw(1)
 	1. 2Hz selected at sw(0) = 0 and sw(1) = 0
 	2. 5Hz selected at sw(0) = 1 and sw(1) = 0
 	3. 10Hz selected at sw(0) = 0 and sw(1) = 1
 	4. 10kHz selected at sw(0) = 1 and sw(1) = 1
-### LFSR (Linear Feedback Shift Register)
+#### LFSR (Linear Feedback Shift Register)
 	* Initialized with an arbitrary 16 bit binary value
 	* LFSR continuously updates at the user selected clock
 	* Output of LFSE is mem_block_in
 	* mem_block_in is a 16 bit binary value
-### Enable for LFSR
+#### Enable for LFSR
 	* Simulates a single event effect 
 	* btn(0) = 1 is the enable condition
 	* Upon enable, bit 14 of the LFSR is set to the result of (bit 0 xor bit 1)
@@ -26,12 +26,12 @@ Part of a Senior Capstone Project
 	* random_out is a 16 bit binary value
     * random_out <= 0 when btn(0) = 0
     * random_out <= LFSR output when btn(0) = 1
-### UART Output
+#### UART Output
 	* Updates at the same user selected clock
 	* mem_block_in and random_out are converted to either integer or hexadecimal values 
     * Displays mem_block_in and random_out in 2 separate columns on a computer terminal
     * This way the results of the button pushes can be easily seen by the user
-### R/W Memory
+#### R/W Memory
 	* Each non-zero value of random_out is stored in a 128 block array of 16 bit memory 
 	* When btn(0) = 1, the bottom 8 bits of random_out are flashed on the LEDs 
 	* LED output is read from left to right and top to bottom
