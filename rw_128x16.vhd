@@ -2,8 +2,8 @@
 -- Stefan Andersson
 -- 
 -- Create Date: 11/04/2018 09:11:15 PM
--- Design Name: rw_128x32.vhd
--- Module Name: rw_128x32 - rw_128x32_arch
+-- Design Name: rw_128x16.vhd
+-- Module Name: rw_128x16 - rw_128x16_arch
 -- Project Name: capstone-fpga-memory-model
 -- Target Devices: XC7A35TICSG324-1L
 -- Tool Versions: Vivado 2018.2
@@ -18,7 +18,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 
-entity rw_128x32 is
+entity rw_128x16 is
     port(
         clock       : in    std_logic;
         reset       : in    std_logic;
@@ -27,9 +27,9 @@ entity rw_128x32 is
         data_in     : in    std_logic_vector(15 downto 0);
         data_out    : out   std_logic_vector(15 downto 0)    
     );
-end entity rw_128x32;
+end entity rw_128x16;
 
-architecture rw_128x32_arch of rw_128x32 is
+architecture rw_128x16_arch of rw_128x16 is
     
     --array or 128 blocks of 16 bits for 2048 bit storage capacity
     type rw_type is array(0 to 127) of std_logic_vector(15 downto 0);
@@ -66,4 +66,4 @@ begin
             end if;
     end process;
 
-end rw_128x32_arch;
+end rw_128x16_arch;
