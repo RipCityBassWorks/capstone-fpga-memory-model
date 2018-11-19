@@ -218,9 +218,13 @@ constant TMR_CNTR_MAX : std_logic_vector(26 downto 0) := "1011111010111100001000
 --within the sendStr variable.
     signal strIndex : natural;        
 --this counter counts the amount of time paused in the UART reset state
-    signal reset_cntr : std_logic_vector (17 downto 0) := (others=>'0');                                                                
+    signal reset_cntr : std_logic_vector (17 downto 0) := (others=>'0');  
+--These signals are used to time the UART output so that it is readable
+    constant tmr_val  :   integer := 50000000;
+    signal tmr         :  integer :=0;
+    signal tmr_tgl      : std_logic;                                                              
 begin    
-    uartCLK <= clock;
+   
     PUSH_BUTTON_ZERO    :   btn_debounce
         port map(
             clock       => CLK100MHZ,
@@ -299,6 +303,19 @@ begin
             data_in     => random_out,
             data_out    => mem_block_out
         );
+ UART_TMR   :   process(CLK100MHZ)
+    begin
+            if(rising_edge(CLK100MHZ)) then
+                if(tmr = tmr_val) then --top most check, if our timer has reached it's val then we reset the time, toggle the toggle
+                    tmr <= 0;
+                    tmr_tgl <= '1';
+                elsif(tmr < tmr_val and tmr_tgl = '1') then --this ensures the toggle bit is only set for one CLK100MHZ cycle
+                    tmr_tgl <= '0';
+                else
+                    tmr <= tmr + 1;     --if our timer hasn't counted up and our toggle bit is 0 then we increment the timer value
+                end if;
+            end if;
+    end process;
  process(CLK100MHZ)
         begin
             if rising_edge(CLK100MHZ) then
@@ -352,7 +369,7 @@ begin
                             end if;
                         end if;
                     when WAIT_BTN =>
-                        if (sw(3) = '1') then
+                        if (sw(3) = '1' and tmr_tgl = '1') then -- by adding tmr_tgl this should only send data when our counter finishes
                             uartState <= LD_BTN_STR;
                             
                         end if;
@@ -412,7 +429,7 @@ begin
         char_load_process : process (CLK100MHZ)
         begin
             if (rising_edge(CLK100MHZ)) then
-                if (uartState = SEND_CHAR) then
+                if (uartState = SEND_CHAR) then 
                     uartSend <= '1';
                     uartData <= sendStr(strIndex);
                 else
